@@ -12,6 +12,7 @@ class ApplicationController < ActionController::API
         nil
     end
 
+    # returns a json response
     def app_response (status: 200, body:nil, message: nil)
         render json: {
             message: message, 
@@ -19,6 +20,18 @@ class ApplicationController < ActionController::API
             body: body,
         }, 
         status:
+    end
+
+    #  returns the current user if the token is valid
+    def current_user
+        if request.headers["Authorization"].present?
+            token = request.headers["Authorization"].split(" ").last
+            decoded_token = decode_data(token)
+            if decoded_token
+                user_id = decoded_token[0]["user_id"]
+                @current_user ||= User.find_by(id: user_id)
+            end
+        end
     end
 
 end
