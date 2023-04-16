@@ -20,7 +20,13 @@ class UsersController < ApplicationController
   end
 
   def login_user
-   
+    user = User.find_by(email: user_params[:email])
+    if user && user.authenticate(user_params[:password])
+      token = encode_data({ user_id: user.id })
+      account_login(data: { user: user, token: token })
+    else
+        account_login(success: false)
+    end
   end
 
   private
