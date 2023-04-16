@@ -3,4 +3,7 @@ Rails.application.routes.draw do
   post '/create_account', to: 'users#create_account'
   post '/login', to: 'users#login_user'
 
+  # get user profile
+  get '/me', to: 'users#me'
+
 end

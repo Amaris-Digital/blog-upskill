@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :authorized, only: [:me]
+
   def create_account
     user =
       User.create(
@@ -19,13 +21,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def me
+    user = @current_user
+    user ? user_profile(data: { user: user }) : user_profile(success: false)
+  end
+
   def login_user
     user = User.find_by(email: user_params[:email])
     if user && user.authenticate(user_params[:password])
       token = encode_data({ user_id: user.id })
       account_login(data: { user: user, token: token })
     else
-        account_login(success: false)
+      account_login(success: false)
     end
   end
 
@@ -48,6 +55,14 @@ class UsersController < ApplicationController
     app_response(
       status: success ? :ok : :unprocessable_entity,
       message: success ? "Login successful" : "Login failed",
+      body: data
+    )
+  end
+
+  def user_profile(success: true, data: nil)
+    app_response(
+      status: success ? :ok : :unprocessable_entity,
+      message: success ? "User profile" : "User not found",
       body: data
     )
   end

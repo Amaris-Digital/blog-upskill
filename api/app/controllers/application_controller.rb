@@ -21,10 +21,15 @@ class ApplicationController < ActionController::API
         }, 
         status:
     end
+    
+    def authorized 
+        current_user ? true : app_response(status: :unauthorized, message: "Unauthorized")
+    end
 
     #  returns the current user if the token is valid
     def current_user
         if request.headers["Authorization"].present?
+            puts request.headers["Authorization"]
             token = request.headers["Authorization"].split(" ").last
             decoded_token = decode_data(token)
             if decoded_token
@@ -33,5 +38,6 @@ class ApplicationController < ActionController::API
             end
         end
     end
+
 
 end
