@@ -18,6 +18,11 @@ RSpec.describe User, type: :model do
       it { should validate_uniqueness_of(:email) }
     end
 
+    describe 'destroys associated posts and comments' do
+      it { should have_many(:posts).dependent(:destroy) }
+      it { should have_many(:comments).dependent(:destroy) }
+    end
+
 
   end
 end

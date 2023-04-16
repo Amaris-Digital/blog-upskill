@@ -29,7 +29,6 @@ class ApplicationController < ActionController::API
     #  returns the current user if the token is valid
     def current_user
         if request.headers["Authorization"].present?
-            puts request.headers["Authorization"]
             token = request.headers["Authorization"].split(" ").last
             decoded_token = decode_data(token)
             if decoded_token
