@@ -41,15 +41,15 @@ class PostsController < ApplicationController
   def update_post
     post = find_post
 
-    category_name = params[:category_name]
+    category_name = params[:category_name] || post.category.name
     category = Category.find_or_create_by(name: category_name)
 
-    tag_names = params[:tag_names].split(", ")
+    tag_names = params[:tag_names]&.split(", ") || post.tags.pluck(:name) 
     tags = tag_names.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
 
     if post.update(
-         title: post_params[:title],
-         content: post_params[:content],
+         title: post_params[:title] || post.title,
+         content: post_params[:content] || post.content,
          category: category,
          tags: tags
        )
@@ -60,6 +60,15 @@ class PostsController < ApplicationController
   end
 
   def destroy_post
+    post = find_post
+
+    if post
+      post.destroy
+      post_delete
+    else
+      post_delete(success: false)
+    end
+
   end
 
   private
@@ -101,6 +110,13 @@ class PostsController < ApplicationController
       status: success ? :ok : :unprocessable_entity,
       message: success ? "Post updated successfully" : "Post update failed",
       body: data
+    )
+  end
+
+  def post_delete success: true
+    app_response(
+      status: success ? :no_content : :unprocessable_entity,
+      message: success ? "Post deleted successfully" : "Post deletion failed",
     )
   end
 end
