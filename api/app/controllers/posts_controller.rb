@@ -18,7 +18,7 @@ class PostsController < ApplicationController
         post.tags = tags
 
         if post.save
-            post_created(data: { post: post })
+            post_created(data: { post: serialize_data(post, PostSerializer) })
         else
             post_created(success: false, data: { errors: post.errors.full_messages })
         end
