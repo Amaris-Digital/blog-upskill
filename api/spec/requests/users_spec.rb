@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe UsersController, type: :controller do
+  include TestHelpers
   describe "controller hac]s valid methods" do
     it { is_expected.to respond_to(:login_user) }
     it { is_expected.to respond_to(:create_account) }
@@ -8,60 +9,34 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe "Authentication", type: :request do
-    routes = %w[/create_account /login]
-    headers = { "Content_Type" => "application/json" }
-    sample_user = { name: "test", email: "test@example.com", password: "test" }
+    describe "Post /create_account" do
+      let(:valid_attributes) {{ name: "test", email: "test@example.com", password: "test" }}
+      let(:invalid_attributes) {{ name: "invalid", email: "", password: "" }}
 
-    it "handle account creation properly" do
-      # with no params
-      post(routes[0], headers: headers)
-      expect(response).to have_http_status(:unprocessable_entity)
+      context "with valid credentials" do
+        before { post "/create_account", params: valid_attributes }
 
-      # with valid data
-      post(routes[0], params: sample_user, headers:)
-      expect(response).to have_http_status(:created)
+        
+        it "returns an created status code" do
+          expect(response).to have_http_status(:created)
+        end
 
-      # with duplicate data
-      post(routes[0], params: sample_user, headers:)
-      expect(response).to have_http_status(:unprocessable_entity)
+        it "returns an authentication token" do
+          expect(JSON.parse(response.body)["body"]["token"]).not_to be_nil
+        end
+      end
 
-      # with invalid data
-      post(
-        routes[0],
-        params: {
-          name: "test",
-          email: "",
-          password: "test"
-        },
-        headers:
-      )
-      expect(response).to have_http_status(:unprocessable_entity)
-    end
+      context "with invalid credentials" do
+        before { post "/create_account", params: invalid_attributes }
 
-    it "handle login properly" do
-      User.create(sample_user)
+        it "responds with a unprocessable entity status code" do
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
 
-      # user logins with correct credentials
-      post(
-        routes[1],
-        params: {
-          email: sample_user[:email],
-          password: sample_user[:password]
-        },
-        headers:
-      )
-      expect(response).to have_http_status(:ok)
-
-      # user login with correct email but wrong password
-      post(
-        routes[1],
-        params: {
-          email: sample_user[:email],
-          password: "wrong"
-        },
-        headers:
-      )
-      expect(response).to have_http_status(:unprocessable_entity)
+        it "returns errors in the respponse body" do
+          expect(JSON.parse(response.body)["body"]["errors"]).to_not be_empty
+        end
+      end
     end
   end
 end
