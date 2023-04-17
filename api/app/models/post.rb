@@ -1,4 +1,7 @@
 class Post < ApplicationRecord
+  # ensure most recent posts are shown first
+  default_scope { order(created_at: :desc)}
+
   belongs_to :user
   belongs_to :category
   has_many :post_tags, dependent: :destroy

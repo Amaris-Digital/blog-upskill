@@ -36,8 +36,4 @@ class ApplicationController < ActionController::API
     end
   end
 
-  # common serializer method
-  def serialize_data(data, serializer)
-    ActiveModelSerializers::SerializableResource.new(data, serializer:)
-  end
 end

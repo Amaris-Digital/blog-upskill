@@ -3,7 +3,8 @@ class PostsController < ApplicationController
     before_action :authorized
 
     def fetch_posts
-
+        posts = Post.all.map{ |post| PostSerializer.new(post) }
+        posts ? posts_fetched(data: { posts: posts}) : posts_fetched(success: false)
     end
 
     def create_post
@@ -18,7 +19,7 @@ class PostsController < ApplicationController
         post.tags = tags
 
         if post.save
-            post_created(data: { post: serialize_data(post, PostSerializer) })
+            post_created(data: { post: PostSerializer.new(post) })
         else
             post_created(success: false, data: { errors: post.errors.full_messages })
         end
@@ -43,6 +44,14 @@ class PostsController < ApplicationController
         app_response(
             status: success ? :created : :unprocessable_entity,
             message: success ? "Post created successfully" : "Post creation failed",
+            body: data
+        )
+    end
+
+    def posts_fetched(success: true, data: nil)
+        app_response(
+            status: success ? :ok : :unprocessable_entity,
+            message: success ? "Posts fetched successfully" : "Posts fetch failed",
             body: data
         )
     end
