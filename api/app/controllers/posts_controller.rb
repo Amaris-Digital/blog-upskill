@@ -24,8 +24,9 @@ class PostsController < ApplicationController
     category_name = params[:category_name]
     category = Category.find_or_create_by(name: category_name)
 
-    tag_names = params[:tag_names].split(", ")
-    tags = tag_names.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
+    tag_names =
+      params[:tag_names].present? ? params[:tag_names].split(", ") : []
+    tags = tag_names&.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
 
     post = @current_user.posts.new(post_params)
     post.category_id = category.id
@@ -44,12 +45,13 @@ class PostsController < ApplicationController
     category_name = params[:category_name] || post.category.name
     category = Category.find_or_create_by(name: category_name)
 
-    tag_names = params[:tag_names]&.split(", ") || post.tags.pluck(:name) 
-    tags = tag_names.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
+    tag_names =
+      params[:tag_names].present? ? params[:tag_names].split(", ").uniq : []
+    tags = tag_names&.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
 
     if post.update(
-         title: post_params[:title] || post.title,
-         content: post_params[:content] || post.content,
+         title: post_params[:title],
+         content: post_params[:content],
          category: category,
          tags: tags
        )
@@ -68,13 +70,12 @@ class PostsController < ApplicationController
     else
       post_delete(success: false)
     end
-
   end
 
   private
 
   def post_params
-    params.permit(:title, :content, :tag_names, :category_name, :user)
+    params.permit(:title, :content, :tag_names, :category_name)
   end
 
   def post_created(success: true, data: nil)
@@ -113,10 +114,10 @@ class PostsController < ApplicationController
     )
   end
 
-  def post_delete success: true
+  def post_delete(success: true)
     app_response(
       status: success ? :no_content : :unprocessable_entity,
-      message: success ? "Post deleted successfully" : "Post deletion failed",
+      message: success ? "Post deleted successfully" : "Post deletion failed"
     )
   end
 end

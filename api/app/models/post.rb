@@ -1,6 +1,6 @@
 class Post < ApplicationRecord
   # ensure most recent posts are shown first
-  default_scope { order(created_at: :desc)}
+  default_scope { order(created_at: :desc) }
 
   belongs_to :user
   belongs_to :category
@@ -12,6 +12,5 @@ class Post < ApplicationRecord
 
   validates :title, presence: true, length: { minimum: 5 }
   validates :content, presence: true, length: { minimum: 100 }
-  validates :category, presence: true
-
+  validates :category_id, presence: true
 end
