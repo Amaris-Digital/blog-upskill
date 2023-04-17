@@ -46,12 +46,12 @@ class PostsController < ApplicationController
     category = Category.find_or_create_by(name: category_name)
 
     tag_names =
-      params[:tag_names].present? ? params[:tag_names].split(", ").uniq : []
+      params[:tag_names].present? ? params[:tag_names].split(", ").uniq : post.tags.map(&:name)
     tags = tag_names&.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
 
     if post.update(
-         title: post_params[:title],
-         content: post_params[:content],
+         title: post_params[:title] || post.title,
+         content: post_params[:content] ||  post.content,
          category: category,
          tags: tags
        )
