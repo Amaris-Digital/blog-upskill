@@ -5,7 +5,10 @@ class Post < ApplicationRecord
   has_many :tags, through: :post_tags
   has_many :comments, dependent: :destroy
 
+  attr_accessor :tag_names, :category_name
+
   validates :title, presence: true, length: { minimum: 5 }
   validates :content, presence: true, length: { minimum: 100 }
+  validates :category, presence: true
 
 end

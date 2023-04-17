@@ -1,7 +1,15 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe "Posts", type: :request do
-  describe "GET /index" do
-    pending "add some examples (or delete) #{__FILE__}"
+RSpec.describe PostsController, type: :controller do
+  describe "it should have this methods" do
+    it { should respond_to(:fetch_posts) }
+    it { should respond_to(:create_post) }
+    it { should respond_to(:update_post) }
+    it { should respond_to(:destroy_post) }
+  end
+
+  describe "post controller requests", type: :request do
+
+
   end
 end

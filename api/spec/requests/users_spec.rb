@@ -4,6 +4,7 @@ RSpec.describe UsersController, type: :controller do
   describe "controller hac]s valid methods" do
     it { is_expected.to respond_to(:login_user) }
     it { is_expected.to respond_to(:create_account) }
+    it { is_expected.to respond_to(:me) }
   end
 
   describe "Authentication", type: :request do
@@ -19,7 +20,7 @@ RSpec.describe UsersController, type: :controller do
       # with valid data
       post(routes[0], params: sample_user, headers:)
       expect(response).to have_http_status(:created)
-      
+
       # with duplicate data
       post(routes[0], params: sample_user, headers:)
       expect(response).to have_http_status(:unprocessable_entity)
@@ -45,7 +46,7 @@ RSpec.describe UsersController, type: :controller do
         routes[1],
         params: {
           email: sample_user[:email],
-          password: sample_user[ :password ]
+          password: sample_user[:password]
         },
         headers:
       )
