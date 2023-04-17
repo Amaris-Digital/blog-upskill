@@ -7,6 +7,16 @@ class PostsController < ApplicationController
         posts ? posts_fetched(data: { posts: posts}) : posts_fetched(success: false)
     end
 
+    def show_post
+        post = find_post
+
+        if post
+            post_found(data: { post: PostSerializer.new(post) })
+        else
+            post_found(success: false)
+        end
+    end
+
     def create_post
         category_name = params[:category_name]
         category = Category.find_or_create_by(name: category_name)
@@ -52,6 +62,18 @@ class PostsController < ApplicationController
         app_response(
             status: success ? :ok : :unprocessable_entity,
             message: success ? "Posts fetched successfully" : "Posts fetch failed",
+            body: data
+        )
+    end
+
+    def find_post
+        Post.find_by(id: params[:id])
+    end
+
+    def post_found(success: true, data: nil)
+        app_response(
+            status: success ? :ok : :unprocessable_entity,
+            message: success ? "Post found successfully" : "Post not found",
             body: data
         )
     end

@@ -6,6 +6,7 @@ RSpec.describe PostsController, type: :controller do
     it { should respond_to(:create_post) }
     it { should respond_to(:update_post) }
     it { should respond_to(:destroy_post) }
+    it { should respond_to(:show_post) }
   end
 
   describe "post controller requests", type: :request do
