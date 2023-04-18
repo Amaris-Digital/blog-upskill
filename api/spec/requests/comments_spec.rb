@@ -111,5 +111,19 @@ RSpec.describe CommentsController, type: :controller do
       end
     
     end
+
+    describe "DELETE /comment/:id" do
+      before { delete "/comment/#{valid_comment.id}", headers: @token_header }
+
+      context "deletes successfully" do
+        it "returns a success status code" do
+          expect(response).to have_http_status(:ok)
+        end
+
+        it "returns a message in the response body" do
+          expect(JSON.parse(response.body)["message"]).to eq("Comment deleted successfully")
+        end
+      end
+    end
   end
 end
