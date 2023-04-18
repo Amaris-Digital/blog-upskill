@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe UsersController, type: :controller do
   include TestHelpers
-  describe "controller hac]s valid methods" do
+
+  describe "controller has valid methods" do
     it { is_expected.to respond_to(:login_user) }
     it { is_expected.to respond_to(:create_account) }
     it { is_expected.to respond_to(:me) }
@@ -86,5 +87,9 @@ RSpec.describe UsersController, type: :controller do
         end
       end
     end
+
+    # TODO: Add tests for the me action
+    # TODO: Add tests for the logout action
+
   end
 end

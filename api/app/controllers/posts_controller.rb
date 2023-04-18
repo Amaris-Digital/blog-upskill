@@ -96,7 +96,7 @@ class PostsController < ApplicationController
 
   def post_found(success: true, data: nil)
     app_response(
-      status: success ? :ok : :unprocessable_entity,
+      status: success ? :ok : :not_found,
       message: success ? "Post found successfully" : "Post not found",
       body: data
     )
@@ -116,7 +116,7 @@ class PostsController < ApplicationController
 
   def post_delete(success: true)
     app_response(
-      status: success ? :no_content : :unprocessable_entity,
+      status: success ? :no_content : :not_found,
       message: success ? "Post deleted successfully" : "Post deletion failed"
     )
   end

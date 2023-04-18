@@ -8,10 +8,10 @@ Rails.application.routes.draw do
 
   # post routes
   
-  get 'posts', to: 'posts#fetch_posts'
-  get 'post/show/:id', to: 'posts#show_post'
-  post 'post/create', to: 'posts#create_post'
-  put 'post/edit/:id', to: 'posts#update_post'
-  delete 'post/delete/:id', to: 'posts#destroy_post'
+  get '/posts', to: 'posts#fetch_posts'
+  get '/post/show/:id', to: 'posts#show_post'
+  post '/post/create', to: 'posts#create_post'
+  put'/post/edit/:id', to: 'posts#update_post'
+  delete '/post/delete/:id', to: 'posts#destroy_post'
 
 end
