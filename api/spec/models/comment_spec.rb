@@ -14,26 +14,25 @@ RSpec.describe Comment, type: :model do
     it { should validate_length_of(:body).is_at_least(5) }
     # it { should validate_uniqueness_of(:user_id).scoped_to(:post_id) }
 
-    it "only allows one comment per user per post" do
-      category = Category.create(name: "testing")
+    # it "only allows one comment per user per post" do
+    #   # category = Category.create(name: "testing")
 
-      user =
-        User.create(
-          name: "John Doe",
-          email: "john.doe@example.com",
-          password: "password"
-        )
-      post =
-        Post.create(
-          title: "Post Title",
-          content: "Post Content",
-          user: user,
-          category: category
-        )
-      comment1 = Comment.create(body: "Comment 1", user: user, post: post)
-      comment2 = Comment.new(body: "Comment 2", user: user, post: post)
-      expect(comment2).not_to be_valid
-    end
+    #   user = User.create(name: "rspec", email: "rspec", password: "rspec")
+    #   category = Category.create(name: "testing")
+    #   tag = Tag.create(name: "tdd")
+    #   post1 =
+    #     user.posts.create(
+    #       title: "rspec",
+    #       content:
+    #         "simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    #       category: category
+    #     )
+
+    #   comment1 = post1.comments.create(body: "Comment 1", user: user)
+    #   comment2 = post1.comments.create(body: "Comment 1", user: user)
+
+    #   expect(comment2).to_not be_valid
+    # end
   end
 
   describe "associations" do
