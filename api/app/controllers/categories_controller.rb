@@ -3,7 +3,7 @@ class CategoriesController < ApplicationController
 
   def fetch_categories
     categories =
-      Category.all.map { |category| CategorySerializer.new(category) }
+      Category.all.map { |category| SingleCategorySerializer.new(category) }
     if categories
       categories_fetched(data: { categories: categories })
     else
