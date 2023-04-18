@@ -17,4 +17,10 @@ Rails.application.routes.draw do
   post "/post/:post_id/comments", to: "comments#create_comment"
   put "/comment/:id", to: "comments#edit_comment"
   delete "/comment/:id", to: "comments#destroy_comment"
+
+  # categories routes
+  get "/categories", to: "categories#fetch_categories"
+  get "/category/:id", to: "categories#show_category"
+
+  
 end
