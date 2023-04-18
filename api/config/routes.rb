@@ -15,6 +15,6 @@ Rails.application.routes.draw do
 
   # comment routes
   post "/post/:post_id/comments", to: "comments#create_comment"
-  put "/comments/:id", to: "comments#edit_comment"
-  delete "/comments/:id", to: "comments#destroy_comment"
+  put "/comment/:id", to: "comments#edit_comment"
+  delete "/comment/:id", to: "comments#destroy_comment"
 end
