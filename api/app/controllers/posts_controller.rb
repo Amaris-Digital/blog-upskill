@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_action :authorized
 
-  def fetch_posts
+  def index
     posts = Post.all.map { |post| PostSerializer.new(post) }
     if posts
       posts_fetched(data: { posts: posts })
@@ -10,7 +10,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def show_post
+  def show
     post = Post.find_by(id: params[:id])
 
     if post
@@ -20,7 +20,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def create_post
+  def create
     category_name = params[:category_name]
     category = Category.find_or_create_by(name: category_name)
 
@@ -39,7 +39,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def update_post
+  def update
     post = find_post
 
     category_name = params[:category_name] || post.category.name
@@ -50,8 +50,8 @@ class PostsController < ApplicationController
     tags = tag_names&.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
 
     if post.update(
-         title: post_params[:title] || post.title,
-         content: post_params[:content] ||  post.content,
+         title: post_params[:title],
+         content: post_params[:content],
          category: category,
          tags: tags
        )
@@ -61,7 +61,7 @@ class PostsController < ApplicationController
     end
   end
 
-  def destroy_post
+  def destroy
     post = find_post
 
     if post

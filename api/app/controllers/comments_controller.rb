@@ -1,9 +1,19 @@
 class CommentsController < ApplicationController
   before_action :authorized
-  before_action :set_post, only: [:create_comment]
-  before_action :set_comment, only: %i[edit_comment destroy_comment]
+  before_action :set_post, only: [ :create, :index ]
+  before_action :set_comment, only: %i[update destroy]
 
-  def create_comment
+  def index
+    commet = @post.comments.map { |comment| CommentSerializer.new(comment) }
+    if commet
+      comment_fetched(data: { comments: commet })
+    else
+      comment_fetched(success: false)
+    end
+
+  end
+
+  def create
     comment = @post.comments.build(comment_params)
     comment.user = @current_user
 
@@ -14,8 +24,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  def edit_comment
-    @comment.user = @current_user
+  def update
     if @comment.update(comment_params)
       comment_updated(data: { comment: CommentSerializer.new(@comment) })
     else
@@ -23,7 +32,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  def destroy_comment
+  def destroy
     if @comment
         @comment.destroy
         comment_deleted
@@ -39,7 +48,7 @@ class CommentsController < ApplicationController
   end
 
   def set_comment
-    @comment = Comment.find(params[:id])
+    @comment = @current_user.comments.find_by(id: params[:id])
   end
 
   def comment_params
@@ -68,6 +77,14 @@ class CommentsController < ApplicationController
         status: success ? :ok : :not_found,
         message: success ? "Comment deleted successfully" : "Comment not found",
         body: data
+    )
+  end
+
+  def comment_fetched(success: true, data: nil)
+    app_response(
+      status: success ? :ok : :unprocessable_entity,
+      message: success ? "Comment fetched successfully" : "Comments fetch failed",
+      body: data
     )
   end
 end
