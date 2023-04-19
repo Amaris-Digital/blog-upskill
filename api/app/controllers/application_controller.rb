@@ -1,12 +1,14 @@
 class ApplicationController < ActionController::API
   # jwt authentication
 
+  JWT_SECRET = Rails.application.credentials.JWT_SECRET_KEY
+
   def encode_data(payload)
-    JWT.encode(payload, "my_secret", "HS256")
+    JWT.encode(payload, JWT_SECRET, "HS256")
   end
 
   def decode_data(token)
-    JWT.decode(token, "my_secret", true, { algorithm: "HS256" })
+    JWT.decode(token, JWT_SECRET, true, { algorithm: "HS256" })
   rescue JWT::DecodeError
     nil
   end
