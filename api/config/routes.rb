@@ -7,20 +7,15 @@ Rails.application.routes.draw do
   get "/me", to: "users#me"
 
   # post routes
-  get "/posts", to: "posts#fetch_posts"
-  get "/post/show/:id", to: "posts#show_post"
-  post "/post/create", to: "posts#create_post"
-  put "/post/edit/:id", to: "posts#update_post"
-  delete "/post/delete/:id", to: "posts#destroy_post"
+  resources :posts
 
   # comment routes
-  post "/post/:post_id/comments", to: "comments#create_comment"
-  put "/comment/:id", to: "comments#edit_comment"
-  delete "/comment/:id", to: "comments#destroy_comment"
+  post "/posts/:post_id/comments", to: "comments#create"
+  resources :comments, only: %i[index update destroy]
 
   # categories routes
-  get "/categories", to: "categories#fetch_categories"
-  get "/category/:id", to: "categories#show_category"
+  resources :categories, only: %i[index show]
 
-  
+  # tag routes
+  resources :tags, only: %i[index show]
 end

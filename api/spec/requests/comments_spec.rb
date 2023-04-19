@@ -3,9 +3,9 @@ require "rails_helper"
 RSpec.describe CommentsController, type: :controller do
   include TestHelpers
 
-  it { should respond_to(:create_comment) }
-  it { should respond_to(:edit_comment) }
-  it { should respond_to(:destroy_comment) }
+  it { should respond_to(:create) }
+  it { should respond_to(:update) }
+  it { should respond_to(:destroy) }
 
   let!(:user) do
     User.create(name: "test", email: "test@example.com", password: "test")
@@ -30,10 +30,10 @@ RSpec.describe CommentsController, type: :controller do
 
   describe "comment controller request", type: :request do
 
-    describe "POST /post/:post_id/comments" do
+    describe "POST /posts/:post_id/comments" do
       context "with valid attributes" do
         before do
-          post "/post/#{valid_post.id}/comments",
+          post "/posts/#{valid_post.id}/comments",
                params: comment,
                headers: @token_header
         end
@@ -50,7 +50,7 @@ RSpec.describe CommentsController, type: :controller do
 
       context "with invalid attributes" do
         before do
-          post "/post/#{valid_post.id}/comments",
+          post "/posts/#{valid_post.id}/comments",
                params: { body: "" },
                headers: @token_header
         end
@@ -69,7 +69,7 @@ RSpec.describe CommentsController, type: :controller do
 
       context "with valid attributes" do
         before do
-          put "/comment/#{valid_comment.id}",
+          put "/comments/#{valid_comment.id}",
               params: { body: "updated comment" },
               headers: @token_header
         end
@@ -85,7 +85,7 @@ RSpec.describe CommentsController, type: :controller do
         end
       end
       context "with invalid attributes" do
-          before { put "/comment/#{valid_comment.id}", params: { body: "" }, headers: @token_header }
+          before { put "/comments/#{valid_comment.id}", params: { body: "" }, headers: @token_header }
 
           it "returns an unprocessable entity status code" do
             expect(response).to have_http_status(:unprocessable_entity)
@@ -99,7 +99,7 @@ RSpec.describe CommentsController, type: :controller do
       end
 
       context "with valid attrinutes but not logged in" do
-          before { put "/comment/#{valid_comment.id}", params: {body: ""} }
+          before { put "/comments/#{valid_comment.id}", params: {body: ""} }
           
           it "returns an unauthorized status code" do
             expect(response).to have_http_status(:unauthorized)
@@ -112,8 +112,8 @@ RSpec.describe CommentsController, type: :controller do
     
     end
 
-    describe "DELETE /comment/:id" do
-      before { delete "/comment/#{valid_comment.id}", headers: @token_header }
+    describe "DELETE /comments/:id" do
+      before { delete "/comments/#{valid_comment.id}", headers: @token_header }
 
       context "deletes successfully" do
         it "returns a success status code" do

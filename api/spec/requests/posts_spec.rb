@@ -4,11 +4,11 @@ RSpec.describe PostsController, type: :controller do
   include TestHelpers
 
   describe "it should have these methods" do
-    it { should respond_to(:fetch_posts) }
-    it { should respond_to(:create_post) }
-    it { should respond_to(:update_post) }
-    it { should respond_to(:destroy_post) }
-    it { should respond_to(:show_post) }
+    it { should respond_to(:index) }
+    it { should respond_to(:create) }
+    it { should respond_to(:update) }
+    it { should respond_to(:destroy) }
+    it { should respond_to(:show) }
   end
 
   describe "post controller requests", type: :request do
@@ -47,7 +47,7 @@ RSpec.describe PostsController, type: :controller do
     describe "POST /post/create" do
       context "with valid attributes" do
         before do
-          post "/post/create", params: valid_post, headers: @token_header
+          post "/posts", params: valid_post, headers: @token_header
         end
         it "returns a created status code" do
           expect(response).to have_http_status(:created)
@@ -62,7 +62,7 @@ RSpec.describe PostsController, type: :controller do
 
       context "with invalid attributes" do
         before do
-          post "/post/create", params: invalid_post, headers: @token_header
+          post "/posts", params: invalid_post, headers: @token_header
         end
 
         it "returns an unprocessable entity status code" do
@@ -75,7 +75,7 @@ RSpec.describe PostsController, type: :controller do
       end
 
       context "with balid attribute but is not logged in" do
-        before { post "/post/create", params: valid_post }
+        before { post "/posts", params: valid_post }
 
         it "returns an unauthorized status code" do
           expect(response).to have_http_status(:unauthorized)
@@ -89,13 +89,13 @@ RSpec.describe PostsController, type: :controller do
 
     describe "GET /post/show/:id" do
       before do
-        post "/post/create", params: valid_post, headers: @token_header
+        post "/posts", params: valid_post, headers: @token_header
         @post_id = JSON.parse(response.body)["body"]["post"]["id"]
       end
 
       context "when a post is found" do
         before do
-          get "/post/show/#{@post_id}",
+          get "/posts/#{@post_id}",
               params: valid_post,
               headers: @token_header
         end
@@ -107,7 +107,7 @@ RSpec.describe PostsController, type: :controller do
 
       context "when a post is not found" do
         before do
-          get "/post/show/#{"invalid"}",
+          get "/posts/#{"invalid"}",
               params: valid_post,
               headers: @token_header
         end
@@ -118,15 +118,15 @@ RSpec.describe PostsController, type: :controller do
       end
     end
 
-    describe "PUT /post/edit/:id" do
+    describe "PUT /posts/:id" do
       before do
-        post "/post/create", params: valid_post, headers: @token_header
+        post "/posts", params: valid_post, headers: @token_header
         @post_id = JSON.parse(response.body)["body"]["post"]["id"]
       end
 
       context "with valid attributes" do
         before do
-          put "/post/edit/#{@post_id}",
+          put "/posts/#{@post_id}",
               params: valid_post,
               headers: @token_header
         end
@@ -139,13 +139,13 @@ RSpec.describe PostsController, type: :controller do
 
     describe "delete /post/delete/:id" do
       before do
-        post "/post/create", params: valid_post, headers: @token_header
+        post "/posts", params: valid_post, headers: @token_header
         @post_id = JSON.parse(response.body)["body"]["post"]["id"]
       end
 
       context "when a post is found" do
         before do
-          delete "/post/delete/#{@post_id}",
+          delete "/posts/#{@post_id}",
                  params: valid_post,
                  headers: @token_header
         end
@@ -157,7 +157,7 @@ RSpec.describe PostsController, type: :controller do
 
       context "when a post is not found" do
         before do
-          delete "/post/delete/#{"invalid"}",
+          delete "/posts/#{"invalid"}",
                  params: valid_post,
                  headers: @token_header
         end

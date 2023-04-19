@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :authorized
 
-  def fetch_categories
+  def index
     categories =
       Category.all.map { |category| SingleCategorySerializer.new(category) }
     if categories
@@ -11,7 +11,7 @@ class CategoriesController < ApplicationController
     end
   end
 
-  def show_category
+  def show
     category = Category.find_by(id: params[:id])
 
     if category
