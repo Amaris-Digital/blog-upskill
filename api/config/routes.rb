@@ -11,7 +11,8 @@ Rails.application.routes.draw do
 
   # comment routes
   post "/posts/:post_id/comments", to: "comments#create"
-  resources :comments, only: %i[index update destroy]
+  get "/posts/:post_id/comments", to: "comments#index"
+  resources :comments, only: %i[update destroy]
 
   # categories routes
   resources :categories, only: %i[index show]
