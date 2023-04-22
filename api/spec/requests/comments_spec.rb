@@ -26,9 +26,9 @@ RSpec.describe CommentsController, type: :controller do
     Comment.create(body: "test comment", user: user, post: valid_post)
   end
 
-  before { @token_header = sign_in_user(user) }
-
+  
   describe "comment controller request", type: :request do
+    before { @token_header = sign_in_user(user) }
 
     describe "POST /posts/:post_id/comments" do
       context "with valid attributes" do

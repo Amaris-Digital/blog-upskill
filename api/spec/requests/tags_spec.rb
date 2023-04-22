@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe TagsController, type: :controller do
   include TestHelpers
 
-  before { @token_header = sign_in_user(user) }
   it { should respond_to(:index) }
   it { should respond_to(:show) }
 
@@ -11,7 +10,7 @@ RSpec.describe TagsController, type: :controller do
     User.create(name: "test", email: "test@example.com", password: "test")
   end
   let!(:category) { Category.create(name: "Tosh on Steroids") }
-
+  
   let!(:valid_post) do
     post = user.posts.create(
       title: "Tosh on Steroids",
@@ -23,8 +22,9 @@ RSpec.describe TagsController, type: :controller do
     post.tags.create(name: "BDD")
     post
   end
-
+  
   describe ' tags controller request ', type: :request do
+    before { @token_header = sign_in_user(user) }
     describe 'GET /tags' do
       context 'when logged in' do
         before { get '/tags', headers: @token_header }
