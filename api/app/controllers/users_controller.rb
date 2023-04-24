@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       token = encode_data({ user_id: user.id })
       account_login(data: { user: user, token: token })
     else
-      account_login(success: false)
+      account_login(success: false, data: { errors: ["Invalid email or password"] })
     end
   end
 
