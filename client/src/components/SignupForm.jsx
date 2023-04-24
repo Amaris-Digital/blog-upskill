@@ -67,7 +67,7 @@ const SignupForm = ({ setShowLogin, setjwtToken }) => {
                         </div>
                         <div className="flex flex-col">
                             <label className="text-green-600" htmlFor="password_confirmation" >Password Confirmation </label>
-                            <input className="border-b-[2px] mb-2" type="password_confirmation" name="password_confirmation" onChange={onChangeBinder} />
+                            <input className="border-b-[2px] mb-2" type="password" name="password_confirmation" onChange={onChangeBinder} />
                             <button className=" bg-green-500 hover:bg-green-400 mt-3 py-1 text-white rounded-lg">Sign in</button>
                         </div>
                     </form>
