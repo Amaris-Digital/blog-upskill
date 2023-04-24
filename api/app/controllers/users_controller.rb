@@ -6,7 +6,8 @@ class UsersController < ApplicationController
       User.create(
         name: user_params[:name],
         email: user_params[:email],
-        password: user_params[:password]
+        password: user_params[:password],
+        password_confirmation: user_params[:password_confirmation]
       )
     if user.valid?
       token = encode_data({ user_id: user.id })
