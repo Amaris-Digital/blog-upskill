@@ -3,7 +3,7 @@ import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} fr
 import LoginForm from './components/LoginForm'
 import SignupForm from './components/SignupForm'
 import axios from 'axios'
-import Blog from './components/Blog'
+import Blog, { blogsLoader } from './components/Blog'
 import ProctectedRoutes from './components/ProctectedRoutes'
 import RootLayout from './layouts/RootLayout'
 
@@ -42,8 +42,8 @@ function App() {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path='/' element={<RootLayout user={user} setUser={setUser} />} >
-        <Route path="/" element={<Blog />} />
+      <Route path='/' element={<RootLayout user={user} setUser={setUser}  />} >
+        <Route index element={<Blog  />} loader={blogsLoader} />
         <Route path="login" element={<LoginForm setUser={setUser} />} />
         <Route path="signup" element={<SignupForm />} />
         <Route  element={<ProctectedRoutes />} >
