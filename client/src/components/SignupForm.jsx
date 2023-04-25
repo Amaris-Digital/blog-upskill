@@ -1,6 +1,8 @@
 import loginimage from '../assets/images/login.jpg'
 import { useState } from 'react'
 import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
+
 
 const SignupForm = ({ setShowLogin, setjwtToken }) => {
 
@@ -13,6 +15,8 @@ const SignupForm = ({ setShowLogin, setjwtToken }) => {
 
     const [errors, setErrors] = useState([])
 
+    const navigate = useNavigate()
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const signUp = async () => {
@@ -21,6 +25,7 @@ const SignupForm = ({ setShowLogin, setjwtToken }) => {
                 const token = await response.data.body.token
                 localStorage.setItem("user", token)
                 setjwtToken(token)
+                navigate('/blog')
             } catch (error) {
                 setErrors(error.response.data.body.errors)
             }
@@ -72,9 +77,9 @@ const SignupForm = ({ setShowLogin, setjwtToken }) => {
                         </div>
                     </form>
                     <p className="text-center">Already have an account?
-                        <button className="underline" onClick={() => setShowLogin(true)}>
+                        <Link className="underline" to='/login'>
                             Login
-                        </button>
+                        </Link>
                     </p>
                 </div>
             </div>
