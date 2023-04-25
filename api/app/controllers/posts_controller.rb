@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :authorized
+  skip_before_action :authorized, only: [:index]
 
   def index
     posts = Post.all.map { |post| PostSerializer.new(post) }
@@ -46,7 +47,13 @@ class PostsController < ApplicationController
     category = Category.find_or_create_by(name: category_name)
 
     tag_names =
-      params[:tag_names].present? ? params[:tag_names].split(", ").uniq : post.tags.map(&:name)
+      (
+        if params[:tag_names].present?
+          params[:tag_names].split(", ").uniq
+        else
+          post.tags.map(&:name)
+        end
+      )
     tags = tag_names&.map { |tag_name| Tag.find_or_create_by(name: tag_name) }
 
     if post.update(
