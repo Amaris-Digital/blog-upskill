@@ -1,11 +1,19 @@
 import axios from "axios"
 import { useLoaderData, Link } from "react-router-dom"
 import { formatDistance } from 'date-fns';
+import { useState } from "react";
+import Pagination from "./Pagination";
 
 
 const Blog = ({ }) => {
 
     const blogs = useLoaderData()
+    const [currentPage, setCurrentPage] = useState(1)
+    const [postsPerPage, setpostsPerPage] = useState(10)
+    const lastPostIndex = currentPage * postsPerPage
+    const firstPostIndex = lastPostIndex - postsPerPage
+    const currentBlogs = blogs.slice(firstPostIndex, lastPostIndex)
+
 
     return (
         <div className="bg-gray-50 py-16 px-4 ">
@@ -13,7 +21,7 @@ const Blog = ({ }) => {
                 <h2 className='text-4xl tracking-tight font-extrabold text-gray-900'>From the blog</h2>
             </div>
             <div className="grid gap-10 max-w-[400px] mx-auto md:max-w-[900px]  md:grid-cols-2 mt-12">
-                {blogs.map((blog) => (
+                {currentBlogs.map((blog) => (
                     <Link  className="bg-gray-50 rounded-lg shadow-lg p-8" to='/' key={blog.id}>
                         <div className="text-center capitalize ">
                             <p className="font-semibold text-gray-500 ">{blog.category.name}</p>
@@ -30,9 +38,10 @@ const Blog = ({ }) => {
                         <div className="mt-4">
                             <p className="text-lg leading-7 font-sans text-gray-500">{blog.content.substr(0, 100)}[...]</p>
                         </div>
+
                     </Link>
                 ))}
-
+                <Pagination postsPerPage={postsPerPage} totalPosts={blogs.length} setCurrentPage={setCurrentPage}  />
             </div>
         </div>
 
