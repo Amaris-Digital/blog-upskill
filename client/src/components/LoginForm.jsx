@@ -34,7 +34,7 @@ export default function LoginForm({ setUser }) {
                 localStorage.setItem("user", response.data.body.user)
                 console.log("it is working")
                 setUser(response.data.body.user)
-                navigate("/blog")
+                navigate("/")
 
             } catch (error) {
                 setErrors(error.response.data.body.errors)
