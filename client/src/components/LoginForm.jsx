@@ -4,7 +4,7 @@ import SignupForm from "./SignupForm"
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
 
-export default function LoginForm({ setjwtToken }) {
+export default function LoginForm({ setUser }) {
 
     const [myForm, setMyForm] = useState(
         {
@@ -28,10 +28,12 @@ export default function LoginForm({ setjwtToken }) {
         const logIn = async () => {
             try {
                 const response = await axios.post("http://localhost:3000/login", myForm)
+            
                 const token = await response.data.body.token
                 localStorage.setItem("jwt", token)
-                setjwtToken(token)
+                localStorage.setItem("user", response.data.body.user)
                 console.log("it is working")
+                setUser(response.data.body.user)
                 navigate("/blog")
 
             } catch (error) {

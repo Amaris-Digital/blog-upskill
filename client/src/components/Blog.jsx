@@ -1,17 +1,10 @@
-const Blog = ({setjwtToken}) => {
+const Blog = ({}) => {
 
-    // just testing
-    const handleLogout = () => {
-        console.log("logout")
-        setjwtToken(null)
-        localStorage.removeItem("user")
-    }
+    // add styling for actual blog post
 
     return (
-        <div>
-            <h1>Blogs</h1>
-            {/* test logout */}
-            <button onClick={handleLogout}>Logout</button>
+        <div className="bg-red-500 w-full h-[440px] m-12">
+            
         </div>
 
     )
