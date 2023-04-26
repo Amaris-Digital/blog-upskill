@@ -52,7 +52,7 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.permit(:body)
+    params.permit(:body, :post_id, :id )
   end
 
   def comment_created(success: true, data: nil)
