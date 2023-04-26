@@ -9,7 +9,7 @@ const Blog = ({ }) => {
 
     const blogs = useLoaderData()
     const [currentPage, setCurrentPage] = useState(1)
-    const [postsPerPage, setpostsPerPage] = useState(10)
+    const postsPerPage = 10
     const lastPostIndex = currentPage * postsPerPage
     const firstPostIndex = lastPostIndex - postsPerPage
     const currentBlogs = blogs.slice(firstPostIndex, lastPostIndex)
@@ -20,9 +20,9 @@ const Blog = ({ }) => {
              <div className='text-center'>
                 <h2 className='text-4xl tracking-tight font-extrabold text-gray-900'>From the blog</h2>
             </div>
-            <div className="grid gap-10 max-w-[400px] mx-auto md:max-w-[900px]  md:grid-cols-2 mt-12">
+            <div className="grid gap-10 max-w-[400px] mx-auto lg:max-w-[900px]  lg:grid-cols-2 mt-12">
                 {currentBlogs.map((blog) => (
-                    <Link  className="bg-gray-50 rounded-lg shadow-lg p-8" to='/' key={blog.id}>
+                    <Link  className="bg-gray-50 rounded-lg shadow-lg p-8" to={`/blogs/${blog.id.toString()}`} key={blog.id}>
                         <div className="text-center capitalize ">
                             <p className="font-semibold text-gray-500 ">{blog.category.name}</p>
                             <h1 className="font-bold text-2xl leading-7 tracking-tight text-gray-900 ">{blog.title}</h1>

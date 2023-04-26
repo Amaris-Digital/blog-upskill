@@ -25,9 +25,9 @@ const SignupForm = ({ setUser }) => {
             
                 const token = await response.data.body.token
                 localStorage.setItem("jwt", token)
-                localStorage.setItem("user", response.data.body.user)
+                localStorage.setItem("user", JSON.stringify(response.data.body.user))
                 console.log("it is working")
-                setUser(response.data.body.user)
+                setUser(JSON.stringify(response.data.body.user))
                 navigate("/")
 
             } catch (error) {

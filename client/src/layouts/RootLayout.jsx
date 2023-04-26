@@ -13,10 +13,10 @@ export default function RootLayout({user, setUser}) {
 
   const handleLogout = () => {
     console.log('logout')
-    console.log(user)
     localStorage.clear()
     setUser(null)
-    navigate('/')
+    console.log(user)
+    navigate('/login')
     
   }
 

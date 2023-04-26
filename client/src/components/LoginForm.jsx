@@ -2,7 +2,7 @@ import loginimage from "../assets/images/login.jpg"
 import { useState } from "react"
 import SignupForm from "./SignupForm"
 import axios from "axios"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, Navigate } from "react-router-dom"
 
 export default function LoginForm({ setUser }) {
 
@@ -23,18 +23,24 @@ export default function LoginForm({ setUser }) {
     };
 
     const navigate = useNavigate()
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const logIn = async () => {
             try {
                 const response = await axios.post("http://localhost:3000/login", myForm)
-            
-                const token = await response.data.body.token
-                localStorage.setItem("jwt", token)
-                localStorage.setItem("user", response.data.body.user)
-                console.log("it is working")
+                console.log("response", response)
+                console.log("response.data.body.user: ",  response.data.body.user)
+                
                 setUser(response.data.body.user)
+                localStorage.setItem("jwt", response.data.body.token)
+                localStorage.setItem("user",JSON.stringify(response.data.body.user))
+                
+                console.log("user data updated: ", setUser)
+
                 navigate("/")
+                console.log("navigated")
+                
 
             } catch (error) {
                 setErrors(error.response.data.body.errors)
@@ -68,7 +74,8 @@ export default function LoginForm({ setUser }) {
                             <label className="text-green-600" htmlFor="password" >Password</label>
                             <input className="border-b-[2px]" type="password" name="password" onChange={onChangeBinder} />
                             <p className="flex justify-end text-sm font-thin mt-1">Forgot password?</p>
-                            <button type="submit" className=" bg-green-500 hover:bg-green-400 mt-3 py-1 text-white rounded-lg">Sign in</button>
+                            <input className="bg-green-500 hover:bg-green-400 mt-3 py-1 text-white rounded-lg" type="submit" value="Sign in" />
+
                         </div>
                     </form>
                     <p className="text-center">New to supeRails?
