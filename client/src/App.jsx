@@ -8,12 +8,14 @@ import ProctectedRoutes from './components/ProctectedRoutes'
 import RootLayout from './layouts/RootLayout'
 import SingleBlog, { singleBlogLoader } from './components/SingleBlog'
 import SingleCategoryPost, { singleCategoryPostLoader } from './components/SingleCategoryPost'
+import Write, { createBlog } from './components/Write'
+
 
 
 
 function App() {
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState(localStorage.getItem('user'))
 
 
   const client = axios.create({
@@ -27,7 +29,7 @@ function App() {
         const response = await client.get('/me')
         console.log(`use effect ${JSON.stringify(response.data.body.user)}`)
         localStorage.setItem('user', JSON.stringify(response.data.body.user))
-        setUser(JSON.stringify(response.data.body.user))
+        setUser(response.data.body.user)
         console.log(user)
 
       } catch (error) {
@@ -48,8 +50,10 @@ function App() {
         <Route path="signup" element={<SignupForm setUser={setUser} />} />
         <Route element={<ProctectedRoutes />} >
           {/* add routes that require user to be logged in */}
-          <Route path="blogs/:id" element={<SingleBlog />} loader={singleBlogLoader} />
-          <Route path="categories/:id" element={<SingleCategoryPost />} loader={singleCategoryPostLoader} />
+          <Route path="blogs/:id" element={<SingleBlog user={user} />} loader={singleBlogLoader} />
+          <Route path="categories/:id" element={<SingleCategoryPost  />} loader={singleCategoryPostLoader} />
+          <Route path='/create' element={< Write />} action={createBlog}  />
+          
         </Route>
 
       </ Route >

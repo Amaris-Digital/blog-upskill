@@ -14,6 +14,8 @@ export default function RootLayout({user, setUser}) {
   const handleLogout = () => {
     console.log('logout')
     localStorage.clear()
+    localStorage.removeItem('jwt')
+    localStorage.removeItem('user')
     setUser(null)
     console.log(user)
     navigate('/login')
@@ -33,7 +35,7 @@ export default function RootLayout({user, setUser}) {
               <Link className='hover:text-white ' to='/'>Home</Link>
             </li>
             <li>
-              <Link  to='/' className='flex hover:text-white items-center space-x-1 '>
+              <Link  to='/create' className='flex hover:text-white items-center space-x-1 '>
                 <span className='text-sm'><TfiWrite /></span>
                  Write
               </Link>
