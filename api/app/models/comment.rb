@@ -1,4 +1,7 @@
 class Comment < ApplicationRecord
+  # ensure most recent comments are returned first
+  default_scope { order(created_at: :desc) }
+
   belongs_to :post
   belongs_to :user
 

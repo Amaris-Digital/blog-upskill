@@ -6,7 +6,8 @@ class UsersController < ApplicationController
       User.create(
         name: user_params[:name],
         email: user_params[:email],
-        password: user_params[:password]
+        password: user_params[:password],
+        password_confirmation: user_params[:password_confirmation]
       )
     if user.valid?
       token = encode_data({ user_id: user.id })
@@ -32,14 +33,14 @@ class UsersController < ApplicationController
       token = encode_data({ user_id: user.id })
       account_login(data: { user: user, token: token })
     else
-      account_login(success: false)
+      account_login(success: false, data: { errors: ["Invalid email or password"] })
     end
   end
 
   private
 
   def user_params
-    params.permit(:name, :email, :password)
+    params.permit(:name, :email, :password, :password_confirmation)
   end
 
   def account_created(success: true, data: nil)
